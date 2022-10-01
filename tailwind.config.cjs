@@ -1,11 +1,14 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        './index.html',
-        './src/**/*.{vue,js,ts}',
-        'node_modules/preline/dist/*.js'
-    ],
-    plugins: [
-        require('preline/plugin'),
-        require('@tailwindcss/forms'),
-    ],
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    'node_modules/preline/dist/*.js',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    require('preline/plugin'),
+  ],
 }
