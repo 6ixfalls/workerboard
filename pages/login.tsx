@@ -1,8 +1,38 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Icon } from "@iconify/react";
+import { FormEvent, useRef, useState } from "react";
+import axios from "axios";
+import Router from "next/router";
+import dompurify from "isomorphic-dompurify";
 
 const Login: NextPage = () => {
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const [error, setError] = useState<string>("");
+
+    async function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+
+        const body = {
+            email: emailRef.current?.value,
+            password: passwordRef.current?.value,
+        };
+
+        try {
+            const res = await axios.post("/api/login", body, {
+                validateStatus: (status) => status < 500,
+            });
+            if (res.status === 200) {
+                Router.push("/");
+            } else {
+                throw new Error(res.data);
+            }
+        } catch (e: any) {
+            setError(e.message);
+        }
+    }
+
     return (
         <div className="dark:bg-gray-900 bg-gray-10 flex items-center py-16 w-screen h-screen">
             <Head>
@@ -26,7 +56,7 @@ const Login: NextPage = () => {
                         </div>
 
                         <div className="mt-5">
-                            <form action="/api/login" method="post">
+                            <form onSubmit={handleSubmit}>
                                 <div className="grid gap-y-4">
                                     <div>
                                         <label
@@ -40,6 +70,7 @@ const Login: NextPage = () => {
                                                 type="email"
                                                 id="email"
                                                 name="email"
+                                                ref={emailRef}
                                                 className="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 border"
                                                 required
                                                 aria-describedby="email-error"
@@ -61,11 +92,22 @@ const Login: NextPage = () => {
                                                 type="password"
                                                 id="password"
                                                 name="password"
+                                                ref={passwordRef}
                                                 className="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 border"
                                                 required
                                                 aria-describedby="password-error"
                                             />
                                         </div>
+                                        <p
+                                            className="text-xs text-red-600 mt-2"
+                                            id="password-error"
+                                            // deepcode ignore DOMXSS: dompurify is used to sanitize the input
+                                            dangerouslySetInnerHTML={{
+                                                __html: dompurify.sanitize(
+                                                    error
+                                                ),
+                                            }}
+                                        ></p>
                                     </div>
 
                                     <button
