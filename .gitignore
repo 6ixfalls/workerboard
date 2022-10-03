@@ -42,3 +42,6 @@ prisma/dev.db-journal
 
 # Snyk cache
 .dccache
+
+# Worker data files
+.data

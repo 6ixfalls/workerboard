@@ -2,8 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import passport from "passport";
 import nextConnect from "next-connect";
-import { localStrategy } from "../../lib/passport-local";
-import { setLoginSession } from "../../lib/auth";
+import { localStrategy } from "../../../lib/passport-local";
+import { setLoginSession } from "../../../lib/auth";
 
 const authenticate = (req: NextApiRequest, res: NextApiResponse) => {
     return new Promise((resolve, reject) => {

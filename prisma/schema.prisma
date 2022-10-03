@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TODO: add a "valid from" date to the user so that we can invalidate old/compromised tokens
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -19,8 +20,9 @@ model User {
 }
 
 model Worker {
-  id        String   @id @default(uuid())
-  uid       Int
-  owner     User     @relation(fields: [uid], references: [id])
-  name      String
+  id          String   @id @default(uuid())
+  uid         Int
+  owner       User     @relation(fields: [uid], references: [id])
+  name        String
+  description String
 }

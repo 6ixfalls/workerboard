@@ -1,4 +1,5 @@
 import { serialize, parse } from "cookie";
+import { IncomingMessage } from "http";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const TOKEN_NAME = "token";
@@ -27,16 +28,16 @@ export function removeTokenCookie(res: NextApiResponse) {
     res.setHeader("Set-Cookie", cookie);
 }
 
-export function parseCookies(req: NextApiRequest) {
+export function parseCookies(req: NextApiRequest | IncomingMessage) {
     // For API Routes we don't need to parse the cookies.
-    if (req.cookies) return req.cookies;
+    if ("cookies" in req && req.cookies) return req.cookies;
 
     // For pages we do need to parse the cookies.
     const cookie = req.headers?.cookie;
     return parse(cookie || "");
 }
 
-export function getTokenCookie(req: NextApiRequest) {
+export function getTokenCookie(req: NextApiRequest | IncomingMessage) {
     const cookies = parseCookies(req);
     return cookies[TOKEN_NAME];
 }

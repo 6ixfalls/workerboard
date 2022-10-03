@@ -1,12 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getLoginSession } from "../../lib/auth";
-import { findUser } from "../../lib/user";
+import { getLoginSession } from "../../../lib/auth";
+import { findUser } from "../../../lib/user";
 
 export default async function user(req: NextApiRequest, res: NextApiResponse) {
     try {
         const session = await getLoginSession(req);
-        console.log(session);
-        const user = (session && (await findUser(session))) ?? null;
+        const user = (session && (await findUser(session.email))) ?? null;
 
         res.status(200).json({ user });
     } catch (error) {

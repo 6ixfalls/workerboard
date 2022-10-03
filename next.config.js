@@ -20,6 +20,9 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: ['www.gravatar.com'],
+  }
 }
 
 module.exports = nextConfig

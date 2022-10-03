@@ -20,7 +20,7 @@ const Login: NextPage = () => {
         };
 
         try {
-            const res = await axios.post("/api/login", body, {
+            const res = await axios.post("/api/user/login", body, {
                 validateStatus: (status) => status < 500,
             });
             if (res.status === 200) {
