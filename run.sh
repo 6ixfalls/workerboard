@@ -1,2 +1,1 @@
-PORT=$SERVER_PORT
-/home/container/doppler run -- npm start
+/home/container/doppler run -- npm start -- -p $SERVER_PORT
